@@ -1,0 +1,10 @@
+const FIELDS_IMAGE = 'images'
+const FIELDS_SIMPLE_NOTE = 'simpleNoteFile'
+
+const FIELDS_NAMES = [FIELDS_IMAGE, FIELDS_SIMPLE_NOTE]
+
+module.exports = {
+  FIELDS_IMAGE,
+  FIELDS_SIMPLE_NOTE,
+  FIELDS_NAMES,
+}
