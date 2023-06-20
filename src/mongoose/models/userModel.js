@@ -10,8 +10,6 @@ const userSchema = mongoose.Schema(
     },
     avatar: {
       type: String,
-      required: true,
-      default: '/public/assets/img/avatars/avatar.jpg',
     },
     name: {
       type: String,
@@ -27,7 +25,6 @@ const userSchema = mongoose.Schema(
     },
     phone: {
       type: String,
-      required: true,
     },
     email: {
       type: String,
@@ -40,7 +37,6 @@ const userSchema = mongoose.Schema(
     },
     isDefaultPassword: {
       type: Boolean,
-      required: true,
       default: true,
     },
     role: {
