@@ -31,6 +31,9 @@ const paymentSchema = mongoose.Schema({
       type: { type: String },
     },
   ],
+  paymentDetail: {
+    type: String,
+  },
   expirationDate: {
     type: Date,
   },

@@ -15,60 +15,61 @@ const payment_confirmation = asyncHandler(async (req, res) => {
 
   const order = await Order.findById(orderId)
   console.log(req.body.id)
-  const mpUrl = `https://api.mercadopago.com/v1/payments/${req.body.data.id}`
 
-  setTimeout(async () => {
-    const {
-      data,
-    } = await serviceRequest(mpUrl, 'get')
-    console.log(data)
-    //     if (results && results.length > 0) {
-    //       const { status, status_detail } = results.reverse()[0]
+  if (req.body.type === 'payment') {
+    const mpUrl = `https://api.mercadopago.com/v1/payments/${req.body.data.id}`
 
-    //       //   if (status === 'approved') {
-    //       //     order.products.forEach(async (item) => {
-    //       //       const decreaseQuantity = order.products.find((product) => product._id === item._id).quantity
+    setTimeout(async () => {
+      const { data } = await serviceRequest(mpUrl, 'get')
+      console.log(data)
 
-    //       //       const product = await Product.findById(item._id)
-    //       //       await decrease_stock(product, decreaseQuantity)
+      const { status, status_detail } = data
 
-    //       //       product.quantity = product.quantity - decreaseQuantity
-    //       //       await product.save()
-    //       //     })
+      if (status === 'approved') {
+        //       //     socket.in('user').emit(
+        //       //       'new-purchase',
+        //       //       order.products.map((product) => ({ _id: product._id, quantity: product.quantity }))
+        //       //     )
+        //       //     socket.in('admin').emit(
+        //       //       'new-purchase',
+        //       //       order.products.map((product) => ({ _id: product._id, quantity: product.quantity }))
+        //       //     )
+        //       //     socket.in('admin').emit('dashboard', {
+        //       //       orders: 1,
+        //       //       sell: formatCurrencyToNum(order.payment.totalAmount),
+        //       //       ordersDetail: {
+        //       //         id: order._id,
+        //       //         created: order.created,
+        //       //         type: 'venta',
+        //       //         paymentStatus: status_detail,
+        //       //         paymentDetail: status,
+        //       //         totalAmount: formatCurrencyToNum(order.payment.totalAmount),
+        //       //       },
+        //       //       stock: order.products.map((product) => ({ _id: product._id, quantity: product.quantity })),
+        //       //     })
+        //       //   }
+        await Order.updateOne(
+          { _id: orderId },
+          {
+            $set: {
+              payment: {
+                ...order.payment,
+                status: status === 'approved' ? 'paid' : 'canceled',
+                paymentDetail: status_detail,
+                mpResponse: {
+                  action: req.body.action,
+                  date_created: req.body.date_created,
+                  id: req.body.data.id,
+                  type: req.body.type,
+                },
+              },
+            },
+          }
+        )
+      }
+    }, 3000)
+  }
 
-    //       //     socket.in('user').emit(
-    //       //       'new-purchase',
-    //       //       order.products.map((product) => ({ _id: product._id, quantity: product.quantity }))
-    //       //     )
-    //       //     socket.in('admin').emit(
-    //       //       'new-purchase',
-    //       //       order.products.map((product) => ({ _id: product._id, quantity: product.quantity }))
-    //       //     )
-    //       //     socket.in('admin').emit('dashboard', {
-    //       //       orders: 1,
-    //       //       sell: formatCurrencyToNum(order.payment.totalAmount),
-    //       //       ordersDetail: {
-    //       //         id: order._id,
-    //       //         created: order.created,
-    //       //         type: 'venta',
-    //       //         paymentStatus: status_detail,
-    //       //         paymentDetail: status,
-    //       //         totalAmount: formatCurrencyToNum(order.payment.totalAmount),
-    //       //       },
-    //       //       stock: order.products.map((product) => ({ _id: product._id, quantity: product.quantity })),
-    //       //     })
-    //       //   }
-
-    //       //   await Order.updateOne(
-    //       //     { _id: orderId },
-    //       //     {
-    //       //       $set: {
-    //       //         payment: { ...order.payment, paymentStatus: status, paymentDetail: status_detail },
-    //       //       },
-    //       //     }
-    //       //   )
-    //     }
-  }, 3000)
   // console.log(resp)
   res.status(201).end()
 })
