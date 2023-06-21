@@ -33,13 +33,10 @@ const get_my_order = asyncHandler(async (req, res) => {
       $unwind: { path: '$payment', preserveNullAndEmptyArrays: true },
     },
     {
-      $unwind: { path: '$order', preserveNullAndEmptyArrays: true },
-    },
-    {
       $unwind: { path: '$address', preserveNullAndEmptyArrays: true },
     },
     {
-      $sort: { createdAt: -1 },
+      $sort: { created: 1 },
     },
   ])
   if (orders.length > 0) {

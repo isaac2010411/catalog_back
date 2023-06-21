@@ -32,6 +32,7 @@ const generate_order = asyncHandler(async (req, res) => {
     created: new Date(),
     address: addressIdOrder,
   })
+
   socket.in('admin').emit('new-notification', {
     _id: new Date(),
     title: 'Nueva Orden',
@@ -40,6 +41,7 @@ const generate_order = asyncHandler(async (req, res) => {
     type: 'order',
     user: user._id,
   })
+
   await order_obj.save()
   res.status(200).json(order_obj)
 })

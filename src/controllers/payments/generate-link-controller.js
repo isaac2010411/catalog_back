@@ -62,6 +62,7 @@ const genetate_link = asyncHandler(async (req, res) => {
       paymentLink: p.body.sandbox_init_point,
       expirationDate: req.body.date_of_expiration,
       created: new Date(),
+      status: 'pending',
     })
 
     //notification creator
