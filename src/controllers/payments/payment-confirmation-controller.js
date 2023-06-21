@@ -4,6 +4,7 @@ const asyncHandler = require('express-async-handler')
 const Order = require('../../mongoose/models/orderModel')
 const { formatCurrencyToNum } = require('../../utils/formatters')
 const serviceRequest = require('../../utils/services')
+const Payment = require('../../mongoose/models/paymentModel')
 
 // @desc    Post generate payment link from mercadopago
 // @route   Post /api/products
@@ -13,7 +14,7 @@ const payment_confirmation = asyncHandler(async (req, res) => {
   const orderId = req.params.id
   const socket = req.app.get('io')
 
-  const order = await Order.findById(orderId)
+  const order = await Payment.findOne({ orderId })
   console.log(req.body.id)
 
   if (req.body.type === 'payment') {
@@ -23,9 +24,9 @@ const payment_confirmation = asyncHandler(async (req, res) => {
       const { data } = await serviceRequest(mpUrl, 'get')
 
       const { status, status_detail } = data
-      console.log( status, status_detail)
+      console.log(status, status_detail)
       if (status === 'approved') {
-        console.log( status, status_detail,'approved')
+        console.log(status, status_detail, 'approved')
         //       //     socket.in('user').emit(
         //       //       'new-purchase',
         //       //       order.products.map((product) => ({ _id: product._id, quantity: product.quantity }))
@@ -48,20 +49,17 @@ const payment_confirmation = asyncHandler(async (req, res) => {
         //       //       stock: order.products.map((product) => ({ _id: product._id, quantity: product.quantity })),
         //       //     })
         //       //   }
-        await Order.updateOne(
-          { _id: orderId },
+        await Payment.updateOne(
+          { orderId },
           {
             $set: {
-              payment: {
-                ...order.payment,
-                status: status === 'approved' ? 'paid' : 'canceled',
-                paymentDetail: status_detail,
-                mpResponse: {
-                  action: req.body.action,
-                  date_created: req.body.date_created,
-                  id: req.body.data.id,
-                  type: req.body.type,
-                },
+              status: status === 'approved' ? 'paid' : 'canceled',
+              paymentDetail: status_detail,
+              mpResponse: {
+                action: req.body.action,
+                date_created: req.body.date_created,
+                id: req.body.data.id,
+                type: req.body.type,
               },
             },
           }
