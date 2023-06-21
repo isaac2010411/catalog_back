@@ -37,6 +37,7 @@ const genetate_link = asyncHandler(async (req, res) => {
       }
     })
     const preferences = {
+      external_reference: req.body._id.toString(),
       purpose: 'wallet_purchase',
       items: items,
       statement_descriptor: 'Hypnotic Grow',
