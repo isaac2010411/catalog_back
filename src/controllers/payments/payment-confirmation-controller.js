@@ -21,11 +21,11 @@ const payment_confirmation = asyncHandler(async (req, res) => {
 
     setTimeout(async () => {
       const { data } = await serviceRequest(mpUrl, 'get')
-      console.log(data)
 
       const { status, status_detail } = data
-
+      console.log( status, status_detail)
       if (status === 'approved') {
+        console.log( status, status_detail,'approved')
         //       //     socket.in('user').emit(
         //       //       'new-purchase',
         //       //       order.products.map((product) => ({ _id: product._id, quantity: product.quantity }))
