@@ -23,6 +23,14 @@ const paymentSchema = mongoose.Schema({
   created: {
     type: Date,
   },
+  mpResponse: [
+    {
+      action: { type: String },
+      date_created: { type: Date },
+      id: { type: String },
+      type: { type: String },
+    },
+  ],
   expirationDate: {
     type: Date,
   },

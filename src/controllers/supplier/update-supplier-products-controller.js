@@ -19,12 +19,15 @@ const update_supplier_product = asyncHandler(async (req, res) => {
       if (err) {
         return
       }
-      const products = JSON.parse(data)
+      const products = eval(data)
 
-      const addOwner = JSON.parse(data).map((element) => {
+      const g = eval(data)
+
+      console.log(g)
+      const addOwner = products.map((element) => {
         return {
           ...element,
-          supplierOwner: '645d8f06b54e6d362fd1eaa1',
+          supplierOwner: '64922fad43ab28cbe08f564f',
         }
       })
 
