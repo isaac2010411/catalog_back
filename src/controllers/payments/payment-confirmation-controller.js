@@ -15,7 +15,7 @@ const payment_confirmation = asyncHandler(async (req, res) => {
 
   const order = await Order.findById(orderId)
   console.log(req.body.id)
-  const mpUrl = `https://api.mercadopago.com/v1/payments/${req.body.id}`
+  const mpUrl = `https://api.mercadopago.com/v1/payments/${req.body.data.id}`
 
   setTimeout(async () => {
     const {
