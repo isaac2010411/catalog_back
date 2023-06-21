@@ -19,9 +19,9 @@ const payment_confirmation = asyncHandler(async (req, res) => {
 
   setTimeout(async () => {
     const {
-      data: { results },
+      data,
     } = await serviceRequest(mpUrl, 'get')
-    console.log(results)
+    console.log(data)
     //     if (results && results.length > 0) {
     //       const { status, status_detail } = results.reverse()[0]
 
