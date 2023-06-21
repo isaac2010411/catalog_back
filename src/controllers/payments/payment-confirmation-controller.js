@@ -25,50 +25,47 @@ const payment_confirmation = asyncHandler(async (req, res) => {
 
       const { status, status_detail } = data
       console.log(status, status_detail)
-      if (status === 'approved') {
-        console.log(status, status_detail, 'approved')
-        //       //     socket.in('user').emit(
-        //       //       'new-purchase',
-        //       //       order.products.map((product) => ({ _id: product._id, quantity: product.quantity }))
-        //       //     )
-        //       //     socket.in('admin').emit(
-        //       //       'new-purchase',
-        //       //       order.products.map((product) => ({ _id: product._id, quantity: product.quantity }))
-        //       //     )
-        //       //     socket.in('admin').emit('dashboard', {
-        //       //       orders: 1,
-        //       //       sell: formatCurrencyToNum(order.payment.totalAmount),
-        //       //       ordersDetail: {
-        //       //         id: order._id,
-        //       //         created: order.created,
-        //       //         type: 'venta',
-        //       //         paymentStatus: status_detail,
-        //       //         paymentDetail: status,
-        //       //         totalAmount: formatCurrencyToNum(order.payment.totalAmount),
-        //       //       },
-        //       //       stock: order.products.map((product) => ({ _id: product._id, quantity: product.quantity })),
-        //       //     })
-        //       //   }
-        await Payment.updateOne(
-          { orderId },
-          {
-            $set: {
-              status: status === 'approved' ? 'paid' : 'canceled',
-              paymentDetail: status_detail,
-              mpResponse: {
-                action: req.body.action,
-                date_created: req.body.date_created,
-                id: req.body.data.id,
-                type: req.body.type,
-              },
+
+      //       //     socket.in('user').emit(
+      //       //       'new-purchase',
+      //       //       order.products.map((product) => ({ _id: product._id, quantity: product.quantity }))
+      //       //     )
+      //       //     socket.in('admin').emit(
+      //       //       'new-purchase',
+      //       //       order.products.map((product) => ({ _id: product._id, quantity: product.quantity }))
+      //       //     )
+      //       //     socket.in('admin').emit('dashboard', {
+      //       //       orders: 1,
+      //       //       sell: formatCurrencyToNum(order.payment.totalAmount),
+      //       //       ordersDetail: {
+      //       //         id: order._id,
+      //       //         created: order.created,
+      //       //         type: 'venta',
+      //       //         paymentStatus: status_detail,
+      //       //         paymentDetail: status,
+      //       //         totalAmount: formatCurrencyToNum(order.payment.totalAmount),
+      //       //       },
+      //       //       stock: order.products.map((product) => ({ _id: product._id, quantity: product.quantity })),
+      //       //     })
+      //       //   }
+      await Payment.updateOne(
+        { orderId },
+        {
+          $set: {
+            status: status === 'approved' ? 'paid' : 'canceled',
+            paymentDetail: status_detail,
+            mpResponse: {
+              action: req.body.action,
+              date_created: req.body.date_created,
+              id: req.body.data.id,
+              type: req.body.type,
             },
-          }
-        )
-      }
+          },
+        }
+      )
     }, 3000)
   }
 
-  // console.log(resp)
   res.status(201).end()
 })
 
