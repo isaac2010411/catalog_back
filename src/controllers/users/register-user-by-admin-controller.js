@@ -38,7 +38,7 @@ const register_user_by_admin = asyncHandler(async (req, res) => {
     role: isAdmin && isSuper ? SUPER_ROLE : isAdmin && !isSuper ? ADMIN_ROLE : USER_ROLE,
     name,
     lastName,
-    randomPassword,
+    password:randomPassword,
     dni,
     phone,
     email,
