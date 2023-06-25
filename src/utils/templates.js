@@ -266,7 +266,7 @@ const templateUserRegistered = (templateInfo) => {
                                                                                                       text-align: left;
                                                                                                   ">
 
-                                                                                            <img src="http://localhost:5000/public/assets/img/email-assets/hypnotic.gif"
+                                                                                            <img src="https://hypnoticgrow-test.herokuapp.com/public/assets/img/email-assets/hypnotic.gif"
                                                                                                 border="0" height="50"
                                                                                                 alt="Logo chapnikandgiesen Oficial" />
                                                                                         </div>
@@ -431,11 +431,11 @@ const templateUserRegistered = (templateInfo) => {
                                         <!-- Section 1 -->
                                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                             <tr>
-                                                <td background="http://localhost:5000/public/assets/img/email-assets/email-image.jpg"
+                                                <td background="https://hypnoticgrow-test.herokuapp.com/public/assets/img/email-assets/email-image.jpg"
                                                     bgcolor="#44453f" valign="top" height="240" class="bg" style="opacity: 0.9">
                                                     <!--[if gte mso 9]>
                                                       <v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style="width:650px; height: 240px">
-                                                          <v:fill type="frame" src="http://localhost:5000/public/assets/img/email-assets/hypnotic.gif" color="#44453f" />
+                                                          <v:fill type="frame" src="https://hypnoticgrow-test.herokuapp.com/public/assets/img/email-assets/hypnotic.gif" color="#44453f" />
                                                           <v:textbox inset="0,0,0,0">
                                                       <![endif]-->
                                                     <div>
@@ -1204,7 +1204,7 @@ const templateUserRegistered = (templateInfo) => {
                                                                                           text-align: left;
                                                                                       ">
 
-                                                                                            <img src="http://localhost:5000/public/assets/img/email-assets/hypnotic.gif"
+                                                                                            <img src="https://hypnoticgrow-test.herokuapp.com/public/assets/img/email-assets/hypnotic.gif"
                                                                                                 border="0" width="90"
                                                                                                 height="90"
                                                                                                 alt="Logo Planet Fraternity Footer" /></a>
