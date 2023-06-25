@@ -6,9 +6,9 @@ const mercadopago = require('mercadopago')
 const Order = require('../../mongoose/models/orderModel')
 const Payment = require('../../mongoose/models/paymentModel')
 const { usersConnected } = require('../../utils/handleSocket')
-const { get } = require('../../routes')
 const Notification = require('../../mongoose/models/notificationModel')
 const User = require('../../mongoose/models/userModel')
+const Address = require('../../mongoose/models/addressModel')
 
 // @desc    GET all suppliers
 // @route   GET /api/suppliers
@@ -22,11 +22,17 @@ const genetate_link = asyncHandler(async (req, res) => {
     })
 
     const getOrder = await Order.findById(req.body._id)
+    const { shippingPrice } = await Address.findById(getOrder.address)
+
+    const p1 = Number(shippingPrice.toString().replace('.', '').replace(',', '.'))
 
     const amount = getOrder.products
       .map((p) => p.publicPrice)
       .reduce((previousValue, currentValue) => parseInt(previousValue) + parseInt(currentValue), 0)
       .toFixed(2)
+
+    console.log(amount)
+    console.log(p1)
 
     const items = getOrder.products.map((product) => {
       return {
@@ -36,6 +42,7 @@ const genetate_link = asyncHandler(async (req, res) => {
         quantity: Number(product.quantity),
       }
     })
+
     const preferences = {
       external_reference: req.body._id.toString(),
       purpose: 'wallet_purchase',
@@ -46,12 +53,19 @@ const genetate_link = asyncHandler(async (req, res) => {
         pending: process.env.PAYMENT_RESPONSE_URL,
         success: process.env.PAYMENT_RESPONSE_URL,
       },
+      shipments: {
+        cost: p1,
+        mode: 'not_specified',
+      },
       auto_return: 'all',
+      expires: true,
       date_of_expiration: req.body.date_of_expiration,
     }
 
     if (process.env.NODE_ENV === 'production') {
       preferences.notification_url = `${process.env.PAYMENT_NOTIFICATION_RESPONSE}/${req.body._id}?source_news=webhooks`
+    } else {
+      preferences.notification_url = `https://hypnoticgrow-test.herokuapp.com/api/payments/${req.body._id}?source_news=webhooks`
     }
 
     const p = await mercadopago.preferences.create(preferences)
@@ -59,7 +73,9 @@ const genetate_link = asyncHandler(async (req, res) => {
     const payment = await Payment.create({
       orderId: req.body._id,
       userId: getOrder.user,
-      total: amount,
+      productsPrice: amount,
+      shippingPrice,
+      total: Number(amount) + p1,
       paymentLink: p.body.sandbox_init_point,
       expirationDate: req.body.date_of_expiration,
       created: new Date(),
@@ -70,7 +86,7 @@ const genetate_link = asyncHandler(async (req, res) => {
     const notification = await Notification.create({
       title: 'Link creado',
       message: `El link para que puedas terminar tu compra fue creado, para continuar por favor presiona pagar, este se vence dentro de [${req.body.date_of_expiration}].
-Recorda que para asegurarte el stock deberas abonar primero`,
+  // Recorda que para asegurarte el stock deberas abonar primero`,
       created: new Date(),
       type: 'link',
       user: getOrder.user,
@@ -90,7 +106,6 @@ Recorda que para asegurarte el stock deberas abonar primero`,
       })
     }
 
-    console.log(p)
     res.status(200).json({})
   } catch (error) {
     console.log(error)

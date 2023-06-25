@@ -1,7 +1,5 @@
-
 const path = require('path')
 const nodemailer = require('nodemailer')
-const { templateUserRegistered } = require('./templates')
 
 //the user's email is necessary for sending
 const emailSender = async (templateInfo, template, subject) => {
@@ -9,16 +7,16 @@ const emailSender = async (templateInfo, template, subject) => {
 
   let transporter = nodemailer.createTransport({
     service: 'gmail',
-    secure: true,
+    secure: false,
     auth: {
       user: 'isaac2010411@gmail.com',
-      pass:'skbfowdarcmhvdxo',
+      pass: 'skbfowdarcmhvdxo',
     },
   })
 
   let mailOptions = {
     from: `"Hypnotic Grow Shop" <isaac2010411@gmail.com>`,
-    to: 'isaac2010411@gmail.com',
+    to: templateInfo.email,
     subject,
     text: 'Hola de Hypnotic Grow Shop',
     html: output,
@@ -35,6 +33,3 @@ const emailSender = async (templateInfo, template, subject) => {
 module.exports = {
   emailSender,
 }
-
-
-emailSender({email:'joa_nonina@hotmail.com',password:'123456'},templateUserRegistered,'Hola')

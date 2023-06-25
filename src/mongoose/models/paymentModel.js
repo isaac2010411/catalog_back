@@ -9,6 +9,12 @@ const paymentSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   },
+  shippingPrice: {
+    type: String,
+  },
+  productsPrice: {
+    type: String,
+  },
   total: {
     type: String,
   },
@@ -32,6 +38,15 @@ const paymentSchema = mongoose.Schema({
   paymentDetail: {
     type: String,
   },
+  net_received_amount: { type: String },
+  fee_details: [
+    {
+      amount: { type: Number },
+      fee_payer: { type: String },
+    },
+  ],
+  paymentId: { type: Number },
+  payment_method_id: { type: String },
   expirationDate: {
     type: Date,
   },

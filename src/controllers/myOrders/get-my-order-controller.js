@@ -42,7 +42,7 @@ const get_my_order = asyncHandler(async (req, res) => {
   if (orders.length > 0) {
     orders = orders[0]
   }
-  console.log(orders)
+ 
   res.status(200).json(orders)
 })
 

@@ -1,7 +1,6 @@
 const templateUserRegistered = (templateInfo) => {
   return `
-    
-    <!DOCTYPE html
+  <!DOCTYPE html
     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -267,7 +266,7 @@ const templateUserRegistered = (templateInfo) => {
                                                                                                       text-align: left;
                                                                                                   ">
 
-                                                                                            <img src="http://localhost:5000/public/assets/img/products/HYpnoticgrowshop.png"
+                                                                                            <img src="http://localhost:5000/public/assets/img/email-assets/hypnotic.gif"
                                                                                                 border="0" height="50"
                                                                                                 alt="Logo chapnikandgiesen Oficial" />
                                                                                         </div>
@@ -432,17 +431,18 @@ const templateUserRegistered = (templateInfo) => {
                                         <!-- Section 1 -->
                                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                             <tr>
-                                                <td background="http://localhost:5000/public/assets/img/products/HYpnoticgrowshop.png"
-                                                    bgcolor="#44453f" valign="top" height="240" class="bg">
+                                                <td background="http://localhost:5000/public/assets/img/email-assets/email-image.jpg"
+                                                    bgcolor="#44453f" valign="top" height="240" class="bg" style="opacity: 0.9">
                                                     <!--[if gte mso 9]>
                                                       <v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style="width:650px; height: 240px">
-                                                          <v:fill type="frame" src="http://localhost:5000/public/assets/img/products/HYpnoticgrowshop.png" color="#44453f" />
+                                                          <v:fill type="frame" src="http://localhost:5000/public/assets/img/email-assets/hypnotic.gif" color="#44453f" />
                                                           <v:textbox inset="0,0,0,0">
                                                       <![endif]-->
                                                     <div>
-                                                        <table width="50%" border="0" cellspacing="0" cellpadding="0">
+                                                        <table width="50%" border="0" cellspacing="0" cellpadding="0"style="opacity: 1">
                                                             <tr>
                                                                 <td class="content-spacing" style="
+                                                              
                                                                               font-size: 0pt;
                                                                               line-height: 0pt;
                                                                               text-align: left;
@@ -482,6 +482,8 @@ const templateUserRegistered = (templateInfo) => {
                                                                                   font-size: 24px;
                                                                                   line-height: 30px;
                                                                                   text-align: left;
+                                                                                  color: white;
+                                                                                  font-weight: 600;
                                                                               ">
                                                                         Bienvenido <br> Hypnotic Grow Shop
                                                                     </div>
@@ -507,7 +509,7 @@ const templateUserRegistered = (templateInfo) => {
                                                                     </table>
 
                                                                     <div class="text-white-center" style="
-                                                                                
+                                                                                color: white;
                                                                                   font-family: Arial,
                                                                                       sans-serif,
                                                                                       'SSP';
@@ -1202,7 +1204,7 @@ const templateUserRegistered = (templateInfo) => {
                                                                                           text-align: left;
                                                                                       ">
 
-                                                                                            <img src="http://localhost:5000/public/assets/img/products/HYpnoticgrowshop.png"
+                                                                                            <img src="http://localhost:5000/public/assets/img/email-assets/hypnotic.gif"
                                                                                                 border="0" width="90"
                                                                                                 height="90"
                                                                                                 alt="Logo Planet Fraternity Footer" /></a>
@@ -1529,8 +1531,6 @@ const templateUserRegistered = (templateInfo) => {
 </body>
 
 </html>
-    
-    
     `
 }
 

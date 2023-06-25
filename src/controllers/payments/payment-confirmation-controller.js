@@ -14,8 +14,7 @@ const payment_confirmation = asyncHandler(async (req, res) => {
   const orderId = req.params.id
   const socket = req.app.get('io')
 
-  const order = await Payment.findOne({ orderId })
-  console.log(req.body.id)
+  // const order = await Payment.findOne({ orderId })
 
   if (req.body.type === 'payment') {
     const mpUrl = `https://api.mercadopago.com/v1/payments/${req.body.data.id}`
@@ -23,8 +22,7 @@ const payment_confirmation = asyncHandler(async (req, res) => {
     setTimeout(async () => {
       const { data } = await serviceRequest(mpUrl, 'get')
 
-      const { status, status_detail } = data
-      console.log(status, status_detail)
+      const { id, status, status_detail, transaction_details, fee_details, payment_method_id } = data
 
       //       //     socket.in('user').emit(
       //       //       'new-purchase',
@@ -60,6 +58,12 @@ const payment_confirmation = asyncHandler(async (req, res) => {
               id: req.body.data.id,
               type: req.body.type,
             },
+            net_received_amount: transaction_details.net_received_amount.toString(),
+            payment_method_id: payment_method_id.toString(),
+            paymentId: id,
+          },
+          $push: {
+            fee_details: fee_details.map((i) => ({ amount: i.amount.toString(), fee_payer: i.fee_payer })),
           },
         }
       )

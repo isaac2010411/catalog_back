@@ -9,7 +9,6 @@ const Supplier = require('../../mongoose/models/supplierModel')
 const get_suppliers = asyncHandler(async (req, res) => {
   const suppliers = await Supplier.find()
 
-  console.log(suppliers)
   res.status(200).json(suppliers)
 })
 

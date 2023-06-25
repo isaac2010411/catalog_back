@@ -14,7 +14,7 @@ const update_supplier_product = asyncHandler(async (req, res) => {
   if (file.path) {
     const rootPath = __dirname.replace('src', '').replace('supplier', '').replace('controllers', '')
 
-    console.log(path.resolve(rootPath.concat('public/assets/files/products/p.json')))
+
     fs.readFile(path.resolve(rootPath.concat('public/assets/files/products/p.json')), 'utf8', async (err, data) => {
       if (err) {
         return
@@ -22,8 +22,6 @@ const update_supplier_product = asyncHandler(async (req, res) => {
       const products = eval(data)
 
       const g = eval(data)
-
-      console.log(g)
       const addOwner = products.map((element) => {
         return {
           ...element,
@@ -35,7 +33,7 @@ const update_supplier_product = asyncHandler(async (req, res) => {
 
       while (count !== products.length) {
         const p = addOwner[count]
-        console.log(p)
+  
         if (p.price && p.product && p.image) {
           await SupplierProduct(p).save()
         }
