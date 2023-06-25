@@ -11,65 +11,60 @@ const { templateUserRegistered } = require('../../utils/templates')
 // @route   POST /api/users/by-admin
 // @access  Public
 const register_user_by_admin = asyncHandler(async (req, res) => {
-  const { name, lastName, email, dni, isAdmin, isSuper, password, isActive, phone, alias, accountValue } = req.body
+  const { name, lastName, email, dni, isAdmin, isSuper, isActive, phone, alias, accountValue } = req.body
   const { _id } = req.user
 
   const isEmailExist = await find_one_user_by_criterial({ email })
   const randomPassword = generateRandomPassword(8)
-  console.log(randomPassword)
-  // if (isEmailExist) {
-  //   res.status(400)
-  //   throw new Error('Ya existe una cuenta con este correo electrónico.')
-  // }
 
-  let isEmailSent
-  let responseEmailSender
-  if (process.env.NODE_ENV !== 'production') {
-    const emailSubject = 'Bienvenido a Hypnotic Grow Shop'
-    const templateInfo = {
-      email,
-      password: randomPassword,
-    }
-    try {
-      responseEmailSender = await emailSender(templateInfo, templateUserRegistered, emailSubject)
-    } catch (error) {
-      console.log(error)
-    }
-
-    isEmailSent = responseEmailSender.accepted?.length ? 'Correo electrónico enviado.' : responseEmailSender
+  if (isEmailExist) {
+    res.status(400)
+    throw new Error('Ya existe una cuenta con este correo electrónico.')
   }
+
+  const emailSubject = 'Bienvenido a Hypnotic Grow Shop'
+  const templateInfo = {
+    email,
+    password: randomPassword,
+  }
+
+  const responseEmailSender = await emailSender(templateInfo, templateUserRegistered, emailSubject)
+
+  const isEmailSent = responseEmailSender.accepted?.length ? 'Correo electrónico enviado.' : responseEmailSender
+
   console.log(isEmailSent)
-  // let data = {
-  //   role: isAdmin && isSuper ? SUPER_ROLE : isAdmin && !isSuper ? ADMIN_ROLE : USER_ROLE,
-  //   name,
-  //   lastName,
-  //   password,
-  //   dni,
-  //   phone,
-  //   email,
-  //   status: isActive ? 'active' : 'inactive',
-  // }
 
-  // if (data.role === USER_ROLE) {
-  //   data.owner = _id
-  // }
+  let data = {
+    role: isAdmin && isSuper ? SUPER_ROLE : isAdmin && !isSuper ? ADMIN_ROLE : USER_ROLE,
+    name,
+    lastName,
+    randomPassword,
+    dni,
+    phone,
+    email,
+    status: isActive ? 'active' : 'inactive',
+  }
 
-  // if (isAdmin && !isSuper) {
-  //   data.accountType = alias ? 'alias' : 'cbu'
-  //   data.accountValue = accountValue
-  // }
+  if (data.role === USER_ROLE) {
+    data.owner = _id
+  }
 
-  // const user = await new_user(data)
+  if (isAdmin && !isSuper) {
+    data.accountType = alias ? 'alias' : 'cbu'
+    data.accountValue = accountValue
+  }
 
-  // delete user.password
+  const user = await new_user(data)
+
+  delete user.password
 
   if (user) {
-    // await new_log({
-    //   type: 'action',
-    //   description: 'REGISTER_USER_SUCCESS',
-    //   record: user._id,
-    // })
-    // res.status(201).json(user)
+    await new_log({
+      type: 'action',
+      description: 'REGISTER_USER_SUCCESS',
+      record: user._id,
+    })
+    res.status(201).json(user)
   } else {
     await new_log({
       type: 'error',
